@@ -43,7 +43,7 @@ while running:
 
             #키보드 셋팅 변경:
             #ctrl + 숫자패드 ==> z부터 시작하는 키보드 입력 옥타브 변경
-            #ctr + 숫자패드 ==>  q부터 시작하는 키보드 입력 옥타브 변경
+            # alt + 숫자패드 ==>  q부터 시작하는 키보드 입력 옥타브 변경
             keypad_input = 0
             if event.mod & pygame.KMOD_CTRL:
                 if event.key == pygame.K_KP1:
