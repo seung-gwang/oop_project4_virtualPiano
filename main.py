@@ -91,7 +91,7 @@ while running:
 
     #피아노(건반) 출력
     p.draw(pressed_keys)
-
+    #p.sound_piano(pressed_keys)
     pygame.display.update() #화면 update
 
 #프로그램 종료
