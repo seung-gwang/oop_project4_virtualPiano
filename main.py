@@ -86,13 +86,18 @@ while running:
             if event.mod & pygame.KMOD_ALT:
                 p.set_key2_to_octave(keypad_input)
 
+        # 소리 출력
+        p.sound_piano(pressed_keys)
+
     #배경 출력
     screen.blit(background, (0,0))
 
     #피아노(건반) 출력
     p.draw(pressed_keys)
-    #p.sound_piano(pressed_keys)
-    pygame.display.update() #화면 update
+    pygame.display.update()  # 화면 update
+
+
+
 
 #프로그램 종료
 pygame.quit()
