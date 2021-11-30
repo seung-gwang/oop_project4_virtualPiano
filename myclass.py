@@ -14,15 +14,15 @@ class key:
         screen.blit(image, (x, y))
 
     def sound_key(self):
-        duration = 3
+        duration = 1
         rate = 44100
         frames = int(duration * rate)
         arr = np.cos(2 * np.pi * self.frequency * np.linspace(0, duration, frames))
         sound = np.asarray([32767 * arr, 32767 * arr]).T.astype(np.int16)
         sound = pygame.sndarray.make_sound(sound.copy())
         sound.play()
-        pygame.time.wait(500)
-        sound.fadeout(50)
+        #pygame.time.wait(500)
+        sound.fadeout(150)
         return sound
 
 
