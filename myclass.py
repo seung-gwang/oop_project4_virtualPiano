@@ -1,10 +1,31 @@
 import pygame
+import numpy as np
+
+key0 = {16.35, 17.32, 18.35, 19.45, 20.60, 21.83, 23.12, 24.50, 25.96, 27.50, 29.14, 30.87}
+white0 = {16.35, 18.35, 20.60, 21.83, 24.50, 27.50, 30.87}
+black0 = {17.32, 19.45, 0, 23.12, 25.96, 29.14, 0}
+
+def sound_piano(freq, duration=3, rate=44100):
+    frames = int(duration * rate)
+    arr = np.cos(2 * np.pi * freq * np.linspace(0, duration, frames))
+    sound = np.asarray([32767*arr, 32767*arr]).T.astype(np.int16)
+    sound = pygame.sndarray.make_sound(sound.copy())
+
+    return sound
 
 class key:
-    def __init__(self, image, x, y):
+
+    def __init__(self, image, x, y, f):
         self.img = image #출력될 키보드 이미지
         self.posX = x #건반 x좌표
         self.posY = y #건반 y좌표
+        self.freq = f
+        self.sound = self.sound_piano()
+        # i = 0
+        # freq = 16.35
+        # while not i == (x-16)/32:
+        #     freq = freq*1.05946
+        # self.freq = freq
 
     def make_sound(self): #소리출력
         pass
@@ -15,7 +36,17 @@ class key:
     def pressed(self):
         self.img = self.img_pressed
 
+    def sound_piano(self, duration=3, rate=44100):
+        frames = int(duration * rate)
+        arr = np.cos(2 * np.pi * self.freq * np.linspace(0, duration, frames))
+        sound = np.asarray([32767 * arr, 32767 * arr]).T.astype(np.int16)
+        sound = pygame.sndarray.make_sound(sound.copy())
+        return sound
 
+    def sound(self, time):
+        self.sound.play()
+        pygame.time.wait(time) #wait는 동시 입력시 죽어버림
+        self.sound.fadeout(50)
 
 class piano:
     def __init__(self, screen):
@@ -63,12 +94,14 @@ class piano:
         for i in range(7):  # 7옥타브 피아노 출력
             for noteIdx in range(len(whiteNotes)):  # 백건 출력
                 if i == self.set_octave1:
+                    freq = white0[noteIdx]*2^i
                     if (pressed_keys[self.keyboard_white_input1[noteIdx]]):
                         drawn_image = self.whiteKeyPressed
                     else:
                         drawn_image = self.whiteKey
 
                 elif i == self.set_octave2:
+                    freq = white0[noteIdx] * 2 ^ i
                     if (pressed_keys[self.keyboard_white_input2[noteIdx]]):
                         drawn_image = self.whiteKeyPressed
                     else:
@@ -78,8 +111,10 @@ class piano:
                     drawn_image = self.whiteKey
 
                 k = key(drawn_image, x=marginX + (7 * whiteKey_width * i) + whiteKey_width * noteIdx,
-                        y=int(marginY * 0.7))
+                        y=int(marginY * 0.7), f = freq)
                 k.draw(self.screen)
+                if(pressed_keys[self.keyboard_white_input1[noteIdx]]):
+                    k.soun
 
             for noteIdx in range(len(blackNotes)):  # 흑건 출력
                 if (blackNotes[noteIdx] != 'dummy'):

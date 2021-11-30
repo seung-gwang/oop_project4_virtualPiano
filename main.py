@@ -27,7 +27,6 @@ pressed_keys = dict()
 for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
     pressed_keys[char] = False
 
-
 #event loop ==> 피아노의 화면 출력 갱신
 running = True
 while running:
@@ -91,7 +90,6 @@ while running:
 
     #피아노(건반) 출력
     p.draw(pressed_keys)
-
     pygame.display.update() #화면 update
 
 #프로그램 종료
