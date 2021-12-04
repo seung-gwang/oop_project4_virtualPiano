@@ -1,5 +1,67 @@
 import pygame
 import numpy as np
+import pygame
+
+class Button():
+    def __init__(self, screen, image, x_pos, y_pos, text_input):
+        main_font = pygame.font.SysFont("system", 40)
+        self.screen = screen
+        self.image = image
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.rect = self.image.get_rect(center = (self.x_pos, self.y_pos))
+        self.text_input = text_input
+        self.text = main_font.render(self.text_input, True, "white")
+        self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
+
+    def update(self):
+        self.screen.blit(self.image, self.rect)
+        self.screen.blit(self.text, self.text_rect)
+
+    def checkForInput(self, position):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            #todo
+            print("Button press!")
+
+    def changecolor(self, position):
+        main_font = pygame.font.SysFont("system", 40)
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            self.text = main_font.render(self.text_input, True, "blue")
+        else:
+            self.text = main_font.render(self.text_input, True, "white")
+
+class recording_Button(Button):
+    def checkForInput(self, position, record, keypress):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            #todo
+            if record:
+                record = False # True에서 False로 변하는 순간 파일 열고 keypress 입력
+                with open("t1.txt", "w") as file:
+                    for i in range(len(keypress)):
+                        file.write(str(keypress[i]) + '\n')
+
+            print("recording Button press!")
+            return record #return False
+
+        return record
+
+class play_Button(Button):
+    def checkForInput(self, position):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            #todo
+            print("play Button press!")
+
+class pause_Button(Button):
+    def checkForInput(self, position):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            #todo
+            print("pause Button press!")
+
+class notes_Button(Button):
+    def checkForInput(self, position):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            #todo
+            print("notes Button press!")
 
 class key:
     def __init__(self, octave_num, pitch_num): #pitch_num: 0~13 ==> 14개음 (dummy 포함)
