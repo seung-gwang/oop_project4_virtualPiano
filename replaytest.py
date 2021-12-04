@@ -80,6 +80,6 @@ def replay(running, keypress):
 
         break
 
-replay(running, keypress, all_possible_key_input)
+replay(running, keypress)
 #프로그램 종료
 pygame.quit()

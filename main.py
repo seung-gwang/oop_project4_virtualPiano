@@ -41,7 +41,7 @@ pressed_keys = dict()
 for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
     pressed_keys[char] = [False, False]
 
-record = False
+record = True
 keypress = []
 
 #event loop ==> 피아노의 화면 출력 갱신
@@ -52,15 +52,9 @@ while running:
         if event.type == pygame.QUIT: #while loop 탈출: 창 닫고 프로그램 종료
             running = False
         if event.type == pygame.KEYDOWN: #키가 눌러짐
-
-
-            # 피아노 연주 입력
-            if record == True:
-                keypress.append([1, str(event.unicode), pygame.time.get_ticks()])
             for char in all_possible_key_input:
                 if event.key == pygame.key.key_code(char):
                     if record == True:
-
                         keypress.append(
                             [1, str(event.unicode), pygame.time.get_ticks(), p.set_octave1 + 1, p.set_octave2 + 1])
                     if (pressed_keys[char][0] == False):
@@ -103,10 +97,6 @@ while running:
                     keypad_input = 7
 
         if event.type == pygame.KEYUP: #키 눌렀다가 떼면 건반 누르기 종료
-
-            if record == True:
-                keypress.append([0, str(event.unicode), pygame.time.get_ticks()])
-
             for char in all_possible_key_input:
                 if event.key == pygame.key.key_code(char):
                     if record == True:
@@ -156,10 +146,10 @@ while running:
 
 
 
-# keypress.append([0, "0", 0, 0, 0]) #더미 데이터
-# with open("t1.txt", "w") as file:
-#     for i in range(len(keypress)):
-#         file.write(str(keypress[i]) + '\n')
+keypress.append([0, "0", 0, 0, 0]) #더미 데이터
+with open("t1.txt", "w") as file:
+    for i in range(len(keypress)):
+        file.write(str(keypress[i]) + '\n')
 file.close()
 
 #프로그램 종료
