@@ -41,7 +41,7 @@ pressed_keys = dict()
 for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
     pressed_keys[char] = [False, False]
 
-record = 0
+record = False
 keypress = []
 #event loop ==> 피아노의 화면 출력 갱신
 running = True
@@ -51,11 +51,14 @@ while running:
         if event.type == pygame.QUIT: #while loop 탈출: 창 닫고 프로그램 종료
             running = False
         if event.type == pygame.KEYDOWN: #키가 눌러짐
-            #피아노 연주 입력
-            if record == 1:
+            # 피아노 연주 입력
+            if record == True:
                 keypress.append([1, str(event.unicode), pygame.time.get_ticks()])
             for char in all_possible_key_input:
                 if event.key == pygame.key.key_code(char):
+                    if record == 1:
+                        keypress.append(
+                            [1, str(event.unicode), pygame.time.get_ticks(), p.set_octave1 + 1, p.set_octave2 + 1])
                     if (pressed_keys[char][0] == False):
                         pressed_keys[char][1] = True
                     pressed_keys[char][0] = True
@@ -96,11 +99,18 @@ while running:
                     keypad_input = 7
 
         if event.type == pygame.KEYUP: #키 눌렀다가 떼면 건반 누르기 종료
+            if record == 1:
+                keypress.append([0, str(event.unicode), pygame.time.get_ticks()])
+
             for char in all_possible_key_input:
                 if event.key == pygame.key.key_code(char):
-                    if(pressed_keys[char][0]):
+                    if record == True:
+                        keypress.append(
+                            [0, str(event.unicode), pygame.time.get_ticks(), p.set_octave1 + 1, p.set_octave2 + 1])
+                    if (pressed_keys[char][0]):
                         pressed_keys[char][1] = True
                     pressed_keys[char][0] = False
+
             if event.mod & pygame.KMOD_CTRL:
                 p.set_key1_to_octave(keypad_input)
             if event.mod & pygame.KMOD_ALT:
@@ -108,12 +118,13 @@ while running:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Button.checkForInput(pygame.mouse.get_pos())
-            recording.checkForInput(pygame.mouse.get_pos())
+            record = recording.checkForInput(pygame.mouse.get_pos(),record)
+            print(record)
             play.checkForInput(pygame.mouse.get_pos())
             pause.checkForInput(pygame.mouse.get_pos())
             notes.checkForInput(pygame.mouse.get_pos())
-        # 소리 출력
 
+        # 소리 출력
         p.sound_piano(pressed_keys)
 
         for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
@@ -138,7 +149,7 @@ while running:
     p.draw(pressed_keys)
     pygame.display.update()  # 화면 update
 
-
+keypress.append([0, "0", 0, 0, 0]) #더미 데이터
 with open("t1.txt", "w") as file:
     for i in range(len(keypress)):
         file.write(str(keypress[i]) + '\n')

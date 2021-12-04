@@ -31,11 +31,13 @@ class Button():
             self.text = main_font.render(self.text_input, True, "white")
 
 class recording_Button(Button):
-    def checkForInput(self, position):
+    def checkForInput(self, position, record):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             #todo
             print("recording Button press!")
 
+            return not record
+        return record
 class play_Button(Button):
     def checkForInput(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
