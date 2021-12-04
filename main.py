@@ -127,8 +127,8 @@ while running:
 
     #배경 출력
     screen.blit(background, (0,0))
-    #버튼 업데이트/출력
 
+    #버튼 업데이트/출력
     recording.update()
     recording.changecolor(pygame.mouse.get_pos())
 

@@ -36,8 +36,15 @@ class Button():
 
 class recording_Button(Button):
     def checkForInput(self, position, record, keypress):
+
+
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             if record:#False일 경우 keypress 파일에 입력
+                firstTime = keypress[0][2]
+                keypress_copy = keypress[:]
+
+                for p in keypress_copy:
+                    p[2] -= firstTime
                 with open("t1.txt", "w") as file:
                     for i in range(len(keypress)):
                         file.write(str(keypress[i]) + '\n')
