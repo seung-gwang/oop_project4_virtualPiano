@@ -30,10 +30,13 @@ class Button():
         else:
             self.text = main_font.render(self.text_input, True, "white")
 
+    def set_activated_color(self):
+        main_font = pygame.font.SysFont("system", 40)
+        self.text = main_font.render(self.text_input, True, "blue")
+
 class recording_Button(Button):
     def checkForInput(self, position, record, keypress):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            #todo
             if record:#False일 경우 keypress 파일에 입력
                 with open("t1.txt", "w") as file:
                     for i in range(len(keypress)):
