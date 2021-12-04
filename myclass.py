@@ -1,5 +1,36 @@
 import pygame
 import numpy as np
+import pygame
+
+class Button():
+    def __init__(self, screen, image, x_pos, y_pos, text_input):
+        main_font = pygame.font.SysFont("system", 40)
+        self.screen = screen
+        self.image = image
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.rect = self.image.get_rect(center = (self.x_pos, self.y_pos))
+        self.text_input = text_input
+        self.text = main_font.render(self.text_input, True, "white")
+        self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
+
+    def update(self):
+        self.screen.blit(self.image, self.rect)
+        self.screen.blit(self.text, self.text_rect)
+
+    def checkForInput(self, position):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            #todo
+            print("Button press!")
+
+    def changecolor(self, position):
+        main_font = pygame.font.SysFont("system", 40)
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            self.text = main_font.render(self.text_input, True, "blue")
+        else:
+            self.text = main_font.render(self.text_input, True, "white")
+
+
 
 class key:
     def __init__(self, octave_num, pitch_num): #pitch_num: 0~13 ==> 14개음 (dummy 포함)

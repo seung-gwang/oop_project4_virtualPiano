@@ -9,11 +9,24 @@ screen = pygame.display.set_mode((screen_width, screen_height))
 #Title
 pygame.display.set_caption("virtual piano")
 
+
 #background 이미지 불러오기
 background = pygame.image.load("background.png")
 
+# title 삽입
+title = pygame.image.load("title.png")
+background.blit(title, [400, 40])
+#버튼 배경 이미지 불러오기
+button_surface = pygame.image.load("button.png")
+
 pygame.init()#pygame 초기화
 p = piano(screen) #피아노 객체 생성
+
+#버튼 객체 생성
+recording = Button(screen, button_surface, 450, 440, "record")
+play = Button(screen, button_surface, 650, 440, "play")
+pause = Button(screen, button_surface, 850, 440, "pause")
+notes = Button(screen, button_surface, 1050, 440, "notes")
 
 #가능한 키보드 입력 설정
 keyboard_white_input1 = "zxcvbnm"
@@ -93,6 +106,12 @@ while running:
             if event.mod & pygame.KMOD_ALT:
                 p.set_key2_to_octave(keypad_input)
 
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            # Button.checkForInput(pygame.mouse.get_pos())
+            recording.checkForInput(pygame.mouse.get_pos())
+            play.checkForInput(pygame.mouse.get_pos())
+            pause.checkForInput(pygame.mouse.get_pos())
+            notes.checkForInput(pygame.mouse.get_pos())
         # 소리 출력
 
         p.sound_piano(pressed_keys)
@@ -102,6 +121,18 @@ while running:
 
     #배경 출력
     screen.blit(background, (0,0))
+    #버튼 업데이트/출력
+    recording.update()
+    recording.changecolor(pygame.mouse.get_pos())
+
+    play.update()
+    play.changecolor(pygame.mouse.get_pos())
+
+    pause.update()
+    pause.changecolor(pygame.mouse.get_pos())
+
+    notes.update()
+    notes.changecolor(pygame.mouse.get_pos())
 
     #피아노(건반) 출력
     p.draw(pressed_keys)
