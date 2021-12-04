@@ -6,6 +6,7 @@ class key:
         #self.img = image #출력될 키보드 이미지
         #self.posX = x #건반 x좌표
         #self.posY = y #건반 y좌표
+        self.stack = []
         if pitch_num > 5:
             self.frequency = 130.81 * ((2)**octave_num) * 1.059 ** (pitch_num-1) #16.35 == C0 주파수, 1.059 곱하면 반음 위 건반 주파수
         elif (pitch_num == 5 or pitch_num == 13):
@@ -17,17 +18,22 @@ class key:
         # screen.blit(self.img, (self.posX, self.posY))
         screen.blit(image, (x, y))
 
-    def sound_key(self):
+    def sound_key(self, v):
         if self.frequency != 0:
-
-            duration = 3
-            rate = 44100
-            frames = int(duration * rate)
-            arr = np.cos(2 * np.pi * self.frequency * np.linspace(0, duration, frames))
-            sound = np.asarray([32767 * arr, 32767 * arr]).T.astype(np.int16)
-            sound = pygame.sndarray.make_sound(sound.copy())
-
-            sound.play()
+            print(self.stack)
+            if v == False:
+                tempsound = self.stack.pop()
+                tempsound.fadeout(100)
+            else:
+                duration = 3
+                rate = 44100
+                frames = int(duration * rate)
+                arr = np.cos(2 * np.pi * self.frequency * np.linspace(0, duration, frames))
+                sound = np.asarray([32767 * arr, 32767 * arr]).T.astype(np.int16)
+                sound = pygame.sndarray.make_sound(sound.copy())
+                self.stack.append(sound)
+                sound.play()
+                print(self.stack)
             # sound.fadeout(100)
 
 
@@ -99,13 +105,13 @@ class piano:
         for i in range(7):  # 7옥타브 피아노 출력
             for noteIdx in range(len(whiteNotes)):  # 백건 출력
                 if i == self.set_octave1:
-                    if (pressed_keys[self.keyboard_white_input1[noteIdx]]):
+                    if (pressed_keys[self.keyboard_white_input1[noteIdx]][0]):
                         drawn_image = self.whiteKeyPressed
                     else:
                         drawn_image = self.whiteKey
 
                 elif i == self.set_octave2:
-                    if (pressed_keys[self.keyboard_white_input2[noteIdx]]):
+                    if (pressed_keys[self.keyboard_white_input2[noteIdx]][0]):
                         drawn_image = self.whiteKeyPressed
                     else:
                         drawn_image = self.whiteKey
@@ -120,13 +126,13 @@ class piano:
             for noteIdx in range(len(blackNotes)):  # 흑건 출력
                 if (blackNotes[noteIdx] != 'dummy'):
                     if i == self.set_octave1:
-                        if (pressed_keys[self.keyboard_black_input1[noteIdx]]):
+                        if (pressed_keys[self.keyboard_black_input1[noteIdx]][0]):
                             drawn_image = self.blackKeyPressed
                         else:
                             drawn_image = self.blackKey
 
                     elif i == self.set_octave2:
-                        if (pressed_keys[self.keyboard_black_input2[noteIdx]]):
+                        if (pressed_keys[self.keyboard_black_input2[noteIdx]][0]):
                             drawn_image = self.blackKeyPressed
                         else:
                             drawn_image = self.blackKey
@@ -142,14 +148,22 @@ class piano:
 
     def sound_piano(self, pressed_keys):
         for k,v in pressed_keys.items():
-            if v[0] == True:
+            if v[0] == True: #키를 눌렀을때
                 if v[1] == True:
+                    run = True
                     if k in "zsxdcfvgbhnjmk":
-                        self.allKeys[14*self.set_octave1 + "zsxdcfvgbhnjmk".index(k)].sound_key()
+                        self.allKeys[14*self.set_octave1 + "zsxdcfvgbhnjmk".index(k)].sound_key(run)
 
                     elif k in "q2w3e4r5t6y7u8":
-                        self.allKeys[14*self.set_octave2 + "q2w3e4r5t6y7u8".index(k)].sound_key()
+                        self.allKeys[14*self.set_octave2 + "q2w3e4r5t6y7u8".index(k)].sound_key(run)
+            elif v[0] == False: #키를 뗐을때
+                if v[1] == True:
+                    run = False
+                    if k in "zsxdcfvgbhnjmk":
+                        self.allKeys[14*self.set_octave1 + "zsxdcfvgbhnjmk".index(k)].sound_key(run)
 
+                    elif k in "q2w3e4r5t6y7u8":
+                        self.allKeys[14*self.set_octave2 + "q2w3e4r5t6y7u8".index(k)].sound_key(run)
 
     # def sound_piano(self, pressed_keys):
     #     whiteNotes = ['C', 'D', 'E', 'F', 'G', 'A', 'B']
