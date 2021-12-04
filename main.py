@@ -30,6 +30,7 @@ for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input
 
 record = 1
 keypress = []
+
 #event loop ==> 피아노의 화면 출력 갱신
 running = True
 while running:
@@ -40,7 +41,7 @@ while running:
         if event.type == pygame.KEYDOWN: #키가 눌러짐
             #피아노 연주 입력
             if record == 1:
-                keypress.append([1, str(event.unicode), pygame.time.get_ticks()])
+                keypress.append([1, str(event.unicode), pygame.time.get_ticks() ])
             for char in all_possible_key_input:
                 if event.key == pygame.key.key_code(char):
                     if (pressed_keys[char][0] == False):
@@ -83,6 +84,8 @@ while running:
                     keypad_input = 7
 
         if event.type == pygame.KEYUP: #키 눌렀다가 떼면 건반 누르기 종료
+            if record == 1:
+                keypress.append([0, str(event.unicode), pygame.time.get_ticks() ])
             for char in all_possible_key_input:
                 if event.key == pygame.key.key_code(char):
                     if(pressed_keys[char][0]):
@@ -106,7 +109,6 @@ while running:
     #피아노(건반) 출력
     p.draw(pressed_keys)
     pygame.display.update()  # 화면 update
-
 
 with open("t1.txt", "w") as file:
     for i in range(len(keypress)):
