@@ -82,7 +82,6 @@ class key:
 
     def sound_key(self, v):
         if self.frequency != 0:
-            print(self.stack)
             if v == False:
                 tempsound = self.stack.pop()
                 tempsound.fadeout(100)
@@ -95,9 +94,6 @@ class key:
                 sound = pygame.sndarray.make_sound(sound.copy())
                 self.stack.append(sound)
                 sound.play()
-                print(self.stack)
-            # sound.fadeout(100)
-
 
 class piano:
     def __init__(self, screen):
