@@ -23,10 +23,10 @@ pygame.init()#pygame 초기화
 p = piano(screen) #피아노 객체 생성
 
 #버튼 객체 생성
-recording = Button(screen, button_surface, 450, 440, "record")
-play = Button(screen, button_surface, 650, 440, "play")
-pause = Button(screen, button_surface, 850, 440, "pause")
-notes = Button(screen, button_surface, 1050, 440, "notes")
+recording = recording_Button(screen, button_surface, 450, 440, "record")
+play = play_Button(screen, button_surface, 650, 440, "play")
+pause = pause_Button(screen, button_surface, 850, 440, "pause")
+notes = notes_Button(screen, button_surface, 1050, 440, "notes")
 
 #가능한 키보드 입력 설정
 keyboard_white_input1 = "zxcvbnm"
@@ -41,7 +41,7 @@ pressed_keys = dict()
 for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
     pressed_keys[char] = [False, False]
 
-record = 1
+record = 0
 keypress = []
 #event loop ==> 피아노의 화면 출력 갱신
 running = True
