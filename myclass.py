@@ -19,14 +19,13 @@ class key:
 
     def sound_key(self):
         if self.frequency != 0:
-
             duration = 3
             rate = 44100
             frames = int(duration * rate)
             arr = np.cos(2 * np.pi * self.frequency * np.linspace(0, duration, frames))
             sound = np.asarray([32767 * arr, 32767 * arr]).T.astype(np.int16)
-            sound = pygame.sndarray.make_sound(sound.copy())
 
+            sound = pygame.sndarray.make_sound(sound.copy())
             sound.play()
             # sound.fadeout(100)
 
@@ -99,13 +98,13 @@ class piano:
         for i in range(7):  # 7옥타브 피아노 출력
             for noteIdx in range(len(whiteNotes)):  # 백건 출력
                 if i == self.set_octave1:
-                    if (pressed_keys[self.keyboard_white_input1[noteIdx]]):
+                    if (pressed_keys[self.keyboard_white_input1[noteIdx]][0]):
                         drawn_image = self.whiteKeyPressed
                     else:
                         drawn_image = self.whiteKey
 
                 elif i == self.set_octave2:
-                    if (pressed_keys[self.keyboard_white_input2[noteIdx]]):
+                    if (pressed_keys[self.keyboard_white_input2[noteIdx]][0]):
                         drawn_image = self.whiteKeyPressed
                     else:
                         drawn_image = self.whiteKey
@@ -120,13 +119,13 @@ class piano:
             for noteIdx in range(len(blackNotes)):  # 흑건 출력
                 if (blackNotes[noteIdx] != 'dummy'):
                     if i == self.set_octave1:
-                        if (pressed_keys[self.keyboard_black_input1[noteIdx]]):
+                        if (pressed_keys[self.keyboard_black_input1[noteIdx]][0]):
                             drawn_image = self.blackKeyPressed
                         else:
                             drawn_image = self.blackKey
 
                     elif i == self.set_octave2:
-                        if (pressed_keys[self.keyboard_black_input2[noteIdx]]):
+                        if (pressed_keys[self.keyboard_black_input2[noteIdx]][0]):
                             drawn_image = self.blackKeyPressed
                         else:
                             drawn_image = self.blackKey
