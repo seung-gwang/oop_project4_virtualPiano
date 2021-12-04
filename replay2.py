@@ -24,12 +24,13 @@ all_possible_key_input = keyboard_white_input1 + keyboard_black_input1 + keyboar
 
 #입력된 키보드 값 저장할 딕셔너리 False(건반 눌려지지 않음)으로 초기화
 pressed_keys = dict()
-
 for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
-    pressed_keys[char] = [False, False]
+    pressed_keys[char] = False
 
-record = 1
-keypress = []
+
+with open("t1.txt", "r") as file:
+    keypresses = [eval(line.rstrip()) for line in file]
+file.close()
 #event loop ==> 피아노의 화면 출력 갱신
 running = True
 while running:
@@ -39,13 +40,10 @@ while running:
             running = False
         if event.type == pygame.KEYDOWN: #키가 눌러짐
             #피아노 연주 입력
-            if record == 1:
-                keypress.append([1, str(event.unicode), pygame.time.get_ticks()])
             for char in all_possible_key_input:
                 if event.key == pygame.key.key_code(char):
-                    if (pressed_keys[char][0] == False):
-                        pressed_keys[char][1] = True
-                    pressed_keys[char][0] = True
+                    pressed_keys[char] = True
+
             #키보드 셋팅 변경:
             #ctrl + 숫자패드 ==> z부터 시작하는 키보드 입력 옥타브 변경
             # alt + 숫자패드 ==>  q부터 시작하는 키보드 입력 옥타브 변경
@@ -85,20 +83,14 @@ while running:
         if event.type == pygame.KEYUP: #키 눌렀다가 떼면 건반 누르기 종료
             for char in all_possible_key_input:
                 if event.key == pygame.key.key_code(char):
-                    if(pressed_keys[char][0]):
-                        pressed_keys[char][1] = True
-                    pressed_keys[char][0] = False
+                    pressed_keys[char] = False
             if event.mod & pygame.KMOD_CTRL:
                 p.set_key1_to_octave(keypad_input)
             if event.mod & pygame.KMOD_ALT:
                 p.set_key2_to_octave(keypad_input)
 
         # 소리 출력
-
         p.sound_piano(pressed_keys)
-
-        for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
-            pressed_keys[char][1] = False
 
     #배경 출력
     screen.blit(background, (0,0))

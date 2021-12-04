@@ -37,7 +37,6 @@ class soundeff:
         self.time = 0
 
 
-
 def sound(a, i, time):
     a[i][0].play(0,time,0)
     a[i][0].fadeout(100)
