@@ -35,41 +35,43 @@ file.close()
 
 #event loop ==> 피아노의 화면 출력 갱신
 running = True
-
-screen.blit(background, (0, 0))
-p.sound_piano(pressed_keys)
-p.draw(pressed_keys)
+while running:
+    screen.blit(background, (0, 0))
+    p.draw(pressed_keys)
+    pygame.display.update()
     # 피아노(건반) 출력
 
-for key in keypress:
-    while key[2] > pygame.time.get_ticks():
-        print("wait")
-    if key[0] == 1: #키가 눌러짐
-        #피아노 연주 입력
-        for char in all_possible_key_input:
-            if key[1] == char:
-                if (pressed_keys[char][0] == False):
-                    pressed_keys[char][1] = True
-                pressed_keys[char][0] = True
-        #키보드 셋팅 변경:
-        #ctrl + 숫자패드 ==> z부터 시작하는 키보드 입력 옥타브 변경
-        # alt + 숫자패드 ==>  q부터 시작하는 키보드 입력 옥타브 변경
-    if key[0] == 0: #키 눌렀다가 떼면 건반 누르기 종료
-        for char in all_possible_key_input:
-            if key[1] == char:
-                if(pressed_keys[char][0]):
-                    pressed_keys[char][1] = True
-                pressed_keys[char][0] = False
+    for key in keypress:
+        p.set_key1_to_octave(key[3])
+        p.set_key2_to_octave(key[4])
+        while key[2] > pygame.time.get_ticks():
+            print("wait")
+        if key[0] == 1: #키가 눌러짐
+            #피아노 연주 입력
+            for char in all_possible_key_input:
+                if key[1] == char:
+                    if (pressed_keys[char][0] == False):
+                        pressed_keys[char][1] = True
+                    pressed_keys[char][0] = True
+            #키보드 셋팅 변경:
+            #ctrl + 숫자패드 ==> z부터 시작하는 키보드 입력 옥타브 변경
+            # alt + 숫자패드 ==>  q부터 시작하는 키보드 입력 옥타브 변경
+        if key[0] == 0: #키 눌렀다가 떼면 건반 누르기 종료
+            for char in all_possible_key_input:
+                if key[1] == char:
+                    if(pressed_keys[char][0]):
+                        pressed_keys[char][1] = True
+                    pressed_keys[char][0] = False
 
-    # 소리 출력
+        # 소리 출력
 
-    p.sound_piano(pressed_keys)
-    p.draw(pressed_keys)
-    pygame.display.update()  # 화면 update
-    for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
-        pressed_keys[char][1] = False
+        p.sound_piano(pressed_keys)
+        p.draw(pressed_keys)
+        pygame.display.update()  # 화면 update
+        for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
+            pressed_keys[char][1] = False
 
-
+    break
 
 #프로그램 종료
 pygame.quit()
