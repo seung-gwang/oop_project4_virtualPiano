@@ -6,25 +6,29 @@ class key:
         #self.img = image #출력될 키보드 이미지
         #self.posX = x #건반 x좌표
         #self.posY = y #건반 y좌표
-        self.frequency = 16.35 * ((1.059**14)**octave_num) * pitch_num #16.35 == C0 주파수, 1.059 곱하면 반음 위 건반 주파수
-
+        if pitch_num > 5:
+            self.frequency = 130.81 * ((2)**octave_num) * 1.059 ** (pitch_num-1) #16.35 == C0 주파수, 1.059 곱하면 반음 위 건반 주파수
+        elif (pitch_num == 5 or pitch_num == 13):
+            self.frequency = 0
+        else :
+            self.frequency = 130.81 * ((2) ** octave_num) * 1.059 ** (pitch_num)
 
     def draw(self, screen, image, x, y):
         # screen.blit(self.img, (self.posX, self.posY))
         screen.blit(image, (x, y))
 
     def sound_key(self):
-        duration = 1
-        rate = 44100
-        frames = int(duration * rate)
-        arr = np.cos(2 * np.pi * self.frequency * np.linspace(0, duration, frames))
-        sound = np.asarray([32767 * arr, 32767 * arr]).T.astype(np.int16)
-        sound = pygame.sndarray.make_sound(sound.copy())
-        sound.play()
-        #pygame.time.wait(500)
-        sound.fadeout(150)
-        return sound
+        if self.frequency != 0:
 
+            duration = 3
+            rate = 44100
+            frames = int(duration * rate)
+            arr = np.cos(2 * np.pi * self.frequency * np.linspace(0, duration, frames))
+            sound = np.asarray([32767 * arr, 32767 * arr]).T.astype(np.int16)
+            sound = pygame.sndarray.make_sound(sound.copy())
+
+            sound.play()
+            # sound.fadeout(100)
 
 
 class piano:
@@ -138,14 +142,13 @@ class piano:
 
     def sound_piano(self, pressed_keys):
         for k,v in pressed_keys.items():
-            if v == True:
-                if k in "zsxdcfvgbhnjmk":
-                    self.allKeys[14*self.set_octave1 + "zsxdcfvgbhnjmk".index(k)].sound_key()
+            if v[0] == True:
+                if v[1] == True:
+                    if k in "zsxdcfvgbhnjmk":
+                        self.allKeys[14*self.set_octave1 + "zsxdcfvgbhnjmk".index(k)].sound_key()
 
-                elif k in "q2w3e4r5t6y7u8":
-                    self.allKeys[14*self.set_octave2 + "q2w3e4r5t6y7u8".index(k)].sound_key()
-
-
+                    elif k in "q2w3e4r5t6y7u8":
+                        self.allKeys[14*self.set_octave2 + "q2w3e4r5t6y7u8".index(k)].sound_key()
 
 
     # def sound_piano(self, pressed_keys):
@@ -240,4 +243,3 @@ class piano:
 
     def set_key2_to_octave(self, keypad_input):
         self.set_octave2 = keypad_input - 1
-

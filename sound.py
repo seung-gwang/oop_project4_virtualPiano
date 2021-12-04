@@ -18,7 +18,6 @@ piano_keys = "C3 C#3 D3 D#3 E3 F3 F#3 G3 G#3 A3 A#3 B3" #매칭될 키
 ukey_list = keyboard.split(' ')
 pkey_list = piano_keys.split(' ')
 keys = dict.fromkeys(ukey_list)
-freq = 130.81 #C3의 주파수a
 for i in range(len(ukey_list)):
     keys[ukey_list[i]] = [pkey_list[i], sound_piano(freq)]
     freq = freq * 1.059
