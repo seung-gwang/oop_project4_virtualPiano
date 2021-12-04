@@ -153,7 +153,7 @@ while running:
 # with open("t1.txt", "w") as file:
 #     for i in range(len(keypress)):
 #         file.write(str(keypress[i]) + '\n')
-file.close()
+#file.close()
 
 #프로그램 종료
 pygame.quit()
