@@ -1,5 +1,5 @@
-import pygame
 from myclass import *
+import pygame
 
 #화면 크기 설정
 screen_width = 1600 #창 가로 길이
@@ -26,7 +26,7 @@ p = piano(screen) #피아노 객체 생성
 recording = recording_Button(screen, button_surface, 450, 440, "record")
 play = play_Button(screen, button_surface, 650, 440, "play")
 pause = pause_Button(screen, button_surface, 850, 440, "pause")
-notes = notes_Button(screen, button_surface, 1050, 440, "notes")
+replay = replay_Button(screen, button_surface, 1050, 440, "notes", p)
 
 #가능한 키보드 입력 설정
 keyboard_white_input1 = "zxcvbnm"
@@ -41,7 +41,7 @@ pressed_keys = dict()
 for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
     pressed_keys[char] = [False, False]
 
-record = True
+record = False
 keypress = []
 
 #event loop ==> 피아노의 화면 출력 갱신
@@ -117,7 +117,7 @@ while running:
             print(record)
             play.checkForInput(pygame.mouse.get_pos())
             pause.checkForInput(pygame.mouse.get_pos())
-            notes.checkForInput(pygame.mouse.get_pos())
+            replay.checkForInput(pygame.mouse.get_pos())
 
         # 소리 출력
         p.sound_piano(pressed_keys)
@@ -137,14 +137,12 @@ while running:
     pause.update()
     pause.changecolor(pygame.mouse.get_pos())
 
-    notes.update()
-    notes.changecolor(pygame.mouse.get_pos())
+    replay.update()
+    replay.changecolor(pygame.mouse.get_pos())
 
     #피아노(건반) 출력
     p.draw(pressed_keys)
     pygame.display.update()  # 화면 update
-
-
 
 keypress.append([0, "0", 0, 0, 0]) #더미 데이터
 with open("t1.txt", "w") as file:
