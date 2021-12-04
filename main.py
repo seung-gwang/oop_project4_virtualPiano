@@ -56,7 +56,7 @@ while running:
                 keypress.append([1, str(event.unicode), pygame.time.get_ticks()])
             for char in all_possible_key_input:
                 if event.key == pygame.key.key_code(char):
-                    if record == 1:
+                    if record == True:
                         keypress.append(
                             [1, str(event.unicode), pygame.time.get_ticks(), p.set_octave1 + 1, p.set_octave2 + 1])
                     if (pressed_keys[char][0] == False):
@@ -99,7 +99,7 @@ while running:
                     keypad_input = 7
 
         if event.type == pygame.KEYUP: #키 눌렀다가 떼면 건반 누르기 종료
-            if record == 1:
+            if record == True:
                 keypress.append([0, str(event.unicode), pygame.time.get_ticks()])
 
             for char in all_possible_key_input:
@@ -118,7 +118,7 @@ while running:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             # Button.checkForInput(pygame.mouse.get_pos())
-            record = recording.checkForInput(pygame.mouse.get_pos(),record)
+            record = recording.checkForInput(pygame.mouse.get_pos(),record, keypress)
             print(record)
             play.checkForInput(pygame.mouse.get_pos())
             pause.checkForInput(pygame.mouse.get_pos())
@@ -149,10 +149,10 @@ while running:
     p.draw(pressed_keys)
     pygame.display.update()  # 화면 update
 
-keypress.append([0, "0", 0, 0, 0]) #더미 데이터
-with open("t1.txt", "w") as file:
-    for i in range(len(keypress)):
-        file.write(str(keypress[i]) + '\n')
+# keypress.append([0, "0", 0, 0, 0]) #더미 데이터
+# with open("t1.txt", "w") as file:
+#     for i in range(len(keypress)):
+#         file.write(str(keypress[i]) + '\n')
 file.close()
 
 #프로그램 종료
