@@ -3,36 +3,47 @@ import pygame
 import numpy as np
 
 class Button():
-    def __init__(self, screen, image, x_pos, y_pos, text_input):
-        main_font = pygame.font.SysFont("system", 40)
+    def __init__(self, screen, image, act_image, activation, x_pos, y_pos):
+        # main_font = pygame.font.SysFont("system", 40)
         self.screen = screen
         self.image = image
+        self.act_image = act_image
+        self.activation = activation
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.rect = self.image.get_rect(center = (self.x_pos, self.y_pos))
-        self.text_input = text_input
-        self.text = main_font.render(self.text_input, True, "white")
-        self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
+        #self.text_input = text_input
+        # self.text = main_font.render(self.text_input, True, "white")
+        #self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
 
-    def update(self):
-        self.screen.blit(self.image, self.rect)
-        self.screen.blit(self.text, self.text_rect)
+    def on_or_off(self):
+        self.activation =  not self.activation
+
+    # def update(self):
+    #     self.screen.blit(self.image, self.rect)
+    #     self.screen.blit(self.text, self.text_rect)
 
     def checkForInput(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+
             #todo
             print("Button press!")
 
-    def changecolor(self, position):
-        main_font = pygame.font.SysFont("system", 40)
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            self.text = main_font.render(self.text_input, True, "blue")
+    def draw(self):
+        # main_font = pygame.font.SysFont("system", 40)
+        # if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+        #     self.text = main_font.render(self.text_input, True, "blue")
+        # else:
+        #     self.text = main_font.render(self.text_input, True, "white")
+        if self.activation:
+            self.screen.blit(self.act_image, (self.x_pos, self.y_pos))
         else:
-            self.text = main_font.render(self.text_input, True, "white")
+            self.screen.blit(self.image, (self.x_pos, self.y_pos))
 
 class recording_Button(Button):
     def checkForInput(self, position, record, keypress):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
+            self.activation = not self.activation
             if record:#False로 변할 경우 keypress 파일에 입력
                 firstTime = keypress[0][2]
                 keypress_copy = keypress[:]
@@ -53,30 +64,33 @@ class play_Button(Button):
     def checkForInput(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             #todo
+            self.activation = not self.activation
             print("play Button press!")
 
 class pause_Button(Button):
     def checkForInput(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            #todo
+
             print("pause Button press!")
 
 class replay_Button(Button):
-    def __init__(self, screen, image, x_pos, y_pos, text_input, obj):
+    def __init__(self, screen, image, act_image, activation, x_pos, y_pos, obj): #obj는 piano 객체
         main_font = pygame.font.SysFont("system", 40)
         self.screen = screen
         self.image = image
+        self.act_image = act_image
         self.x_pos = x_pos
         self.y_pos = y_pos
+        self.activation = activation
         self.rect = self.image.get_rect(center = (self.x_pos, self.y_pos))
-        self.text_input = text_input
-        self.text = main_font.render(self.text_input, True, "white")
-        self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
+        # self.text_input = text_input
+        # self.text = main_font.render(self.text_input, True, "white")
+        # self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
         self.obj = obj
 
     def checkForInput(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            #todo
+            self.activation = not self.activation
             print("replay Button press!")
             tempTime = pygame.time.get_ticks()
             running = True

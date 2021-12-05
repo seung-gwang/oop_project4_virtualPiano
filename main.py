@@ -14,19 +14,33 @@ pygame.display.set_caption("virtual piano")
 background = pygame.image.load("background.png")
 
 # title 삽입
-title = pygame.image.load("title.png")
-background.blit(title, [400, 40])
+title = pygame.image.load("title_rainbow.png")
+background.blit(title, [500, 40])
+
 #버튼 배경 이미지 불러오기
-button_surface = pygame.image.load("button.png")
+#마리오/젤다 등 이미지로 대체 가능: 저장된 음악 불러와서 재생
+play_img = pygame.image.load("zelda.png")
+play_img_act = pygame.image.load("zelda.png")
+
+#녹음 키 이미지
+record_img = pygame.image.load("recording.png")
+record_img_act = pygame.image.load("recording_playing.png")
+
+#녹음된 sound 재생
+replay_img = pygame.image.load("replay.png")
+replay_img_act = pygame.image.load("replay_playing.png")
+
+
 
 pygame.init()#pygame 초기화
 p = piano(screen) #피아노 객체 생성
 
 #버튼 객체 생성
-recording = recording_Button(screen, button_surface, 450, 440, "record")
-play = play_Button(screen, button_surface, 650, 440, "play")
-pause = pause_Button(screen, button_surface, 850, 440, "pause")
-replay = replay_Button(screen, button_surface, 1050, 440, "notes", p)
+recording = recording_Button(screen, record_img, record_img_act, False, 450, 440) #녹음버튼
+replay = replay_Button(screen, replay_img, replay_img_act, False, 750, 440, p) #리플레이 버튼
+play = play_Button(screen, play_img, play_img_act, False, 1050, 440)#젤다
+
+
 
 #가능한 키보드 입력 설정
 keyboard_white_input1 = "zxcvbnm"
@@ -118,11 +132,12 @@ while running:
             record = recording.checkForInput(pygame.mouse.get_pos(),record, keypress)
             print(record)
             play.checkForInput(pygame.mouse.get_pos())
-            pause.checkForInput(pygame.mouse.get_pos())
+            #pause.checkForInput(pygame.mouse.get_pos())
             replayed = replay.checkForInput(pygame.mouse.get_pos())
             if replayed:
                 pressed_keys = pressed_keys_init
                 keypress = list()
+                replay.on_or_off()
 
         # 소리 출력
         p.sound_piano(pressed_keys)
@@ -132,28 +147,25 @@ while running:
 
     #배경 출력
     screen.blit(background, (0,0))
+
     #버튼 업데이트/출력
-    recording.update()
-    recording.changecolor(pygame.mouse.get_pos())
+    #recording.update()
+    recording.draw()
+    #recording.changecolor(pygame.mouse.get_pos())
 
-    play.update()
-    play.changecolor(pygame.mouse.get_pos())
+    #play.update()
+    play.draw()
+    #play.changecolor(pygame.mouse.get_pos())
 
-    pause.update()
-    pause.changecolor(pygame.mouse.get_pos())
+    # pause.update()
+    # pause.changecolor(pygame.mouse.get_pos())
 
-    replay.update()
-    replay.changecolor(pygame.mouse.get_pos())
+    #replay.update()
+    replay.draw()
+    #replay.changecolor(pygame.mouse.get_pos())
 
     #피아노(건반) 출력
     p.draw(pressed_keys)
     pygame.display.update()  # 화면 update
 
-# keypress.append([0, "0", 0, 0, 0]) #더미 데이터
-# with open("t1.txt", "w") as file:
-#     for i in range(len(keypress)):
-#         file.write(str(keypress[i]) + '\n')
-# file.close()
-
-#프로그램 종료
 pygame.quit()
