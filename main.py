@@ -12,7 +12,7 @@ pygame.display.set_caption("virtual piano")
 
 
 #background 이미지 불러오기
-background = pygame.image.load("background.png")
+background = pygame.image.load("background2.png")
 
 # title 삽입
 title = pygame.image.load("title_rainbow.png")
@@ -38,8 +38,8 @@ p = piano(screen) #피아노 객체 생성
 
 #버튼 객체 생성
 recording = recording_Button(screen, record_img, record_img_act, False, 450, 440) #녹음버튼
-replay = replay_Button(screen, replay_img, replay_img_act, False, 750, 440, p) #리플레이 버튼
-play = play_Button(screen, play_img, play_img_act, False, 1050, 440, p)#젤다
+replay = replay_Button(screen, replay_img, 750, 440, p) #리플레이 버튼
+play = play_Button(screen, play_img,  1050, 440, p)#젤다
 
 
 
@@ -73,7 +73,7 @@ while running:
                 if event.key == pygame.key.key_code(char):
                     if record == True:
                         keypress.append(
-                            [1, str(event.unicode), pygame.time.get_ticks(), p.set_octave1 + 1, p.set_octave2 + 1])
+                            [1, str(event.unicode), pygame.time.get_ticks(), p.get_octave1() + 1, p.get_octave2() + 1])
                     if (pressed_keys[char][0] == False):
                         pressed_keys[char][1] = True
                     pressed_keys[char][0] = True
@@ -118,7 +118,7 @@ while running:
                 if event.key == pygame.key.key_code(char):
                     if record == True:
                         keypress.append(
-                            [0, str(event.unicode), pygame.time.get_ticks(), p.set_octave1 + 1, p.set_octave2 + 1])
+                            [0, str(event.unicode), pygame.time.get_ticks(), p.get_octave1() + 1, p.get_octave2() + 1])
                     if (pressed_keys[char][0]):
                         pressed_keys[char][1] = True
                     pressed_keys[char][0] = False
@@ -130,7 +130,10 @@ while running:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             record = recording.checkForInput(pygame.mouse.get_pos(),record, keypress)
-            print(record)
+            if record:
+                print('recording start!')
+            else:
+                print('recording finished')
             play.checkForInput(pygame.mouse.get_pos())
             replayed = replay.checkForInput(pygame.mouse.get_pos())
             if replayed:
@@ -148,8 +151,9 @@ while running:
 
     #버튼 출력
     recording.draw()
-    play.draw()
     replay.draw()
+    play.draw()
+
 
     #피아노(건반) 출력
     p.draw(pressed_keys)
