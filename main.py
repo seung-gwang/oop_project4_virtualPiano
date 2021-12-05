@@ -1,5 +1,6 @@
-from myclass import *
-import pygame
+from piano import *
+from button import * #button
+
 
 #화면 크기 설정
 screen_width = 1600 #창 가로 길이

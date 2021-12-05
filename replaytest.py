@@ -1,4 +1,4 @@
-from myclass import *
+from button import *
 import pygame
 
 
