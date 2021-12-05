@@ -73,17 +73,20 @@ class replay_Button(Button):
         self.text = main_font.render(self.text_input, True, "white")
         self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
         self.obj = obj
+
     def checkForInput(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             #todo
             print("replay Button press!")
-            tempTime = pygame.time.get_ticks()
-            running = True
-            keypress = []
-            with open("t1.txt", "r") as file:
-                keypress = [eval(line.rstrip()) for line in file]
-            file.close()
-            self.obj.replay(running, keypress, tempTime)
+
+            for i in range(2):
+                tempTime = pygame.time.get_ticks()
+                running = True
+                keypress = []
+                with open("sp.txt", "r") as file:
+                    keypress = [eval(line.rstrip()) for line in file]
+                file.close()
+                self.obj.replay(running, keypress, tempTime)
 
 class key:
     def __init__(self, octave_num, pitch_num): #pitch_num: 0~13 ==> 14개음 (dummy 포함)
@@ -263,8 +266,8 @@ class piano:
             for key in keypress:
                 self.set_key1_to_octave(key[3])
                 self.set_key2_to_octave(key[4])
-                while key[2] > pygame.time.get_ticks() - click_time:
-                    print("wait")
+                while key[2]-100 > pygame.time.get_ticks() - click_time:
+                    pass
                 if key[0] == 1:  # 키가 눌러짐
                     # 피아노 연주 입력
                     for char in all_possible_key_input:

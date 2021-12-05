@@ -144,11 +144,6 @@ while running:
     p.draw(pressed_keys)
     pygame.display.update()  # 화면 update
 
-keypress.append([0, "0", 0, 0, 0]) #더미 데이터
-with open("t1.txt", "w") as file:
-    for i in range(len(keypress)):
-        file.write(str(keypress[i]) + '\n')
-file.close()
 
 #프로그램 종료
 pygame.quit()
