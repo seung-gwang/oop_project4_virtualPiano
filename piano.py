@@ -42,10 +42,7 @@ class piano:
         self.__keyboard_black_input1 = "sdfghjk"
         self.__keyboard_white_input2 = "qwertyu"
         self.__keyboard_black_input2 = "2345678"
-        # self.all_possible_key_input = self.keyboard_white_input1 + \
-        #                               self.keyboard_black_input1 + \
-        #                               self.keyboard_white_input2 + \
-        #                               self.keyboard_black_input2
+
 
 
     def draw(self, pressed_keys):

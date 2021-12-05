@@ -39,7 +39,6 @@ class recording_Button(Button):
                     for i in range(len(keypress)):
                         file.write(str(keypress[i]) + '\n')
                 file.close()
-            print("recording Button press!")
 
             return not record #return False
 
@@ -59,7 +58,6 @@ class play_Button(Button):
         if position[0] in range(self._rect.left, self._rect.right) and position[1] in range(self._rect.top,
                                                                                           self._rect.bottom):
 
-            print("replay Button press!")
 
             for i in range(2):
                 tempTime = pygame.time.get_ticks()
@@ -87,7 +85,6 @@ class replay_Button(Button):
 
     def checkForInput(self, position):
         if position[0] in range(self._rect.left, self._rect.right) and position[1] in range(self._rect.top, self._rect.bottom):
-            print("replay Button press!")
             tempTime = pygame.time.get_ticks()
             running = True
             keypress = []

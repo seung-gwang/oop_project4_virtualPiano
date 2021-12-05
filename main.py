@@ -130,10 +130,7 @@ while running:
 
         if event.type == pygame.MOUSEBUTTONDOWN:
             record = recording.checkForInput(pygame.mouse.get_pos(),record, keypress)
-            if record:
-                print('recording start!')
-            else:
-                print('recording finished')
+
             play.checkForInput(pygame.mouse.get_pos())
             replayed = replay.checkForInput(pygame.mouse.get_pos())
             if replayed:
