@@ -33,7 +33,7 @@ class Button():
 class recording_Button(Button):
     def checkForInput(self, position, record, keypress):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            if record:#False일 경우 keypress 파일에 입력
+            if record:#False로 변할 경우 keypress 파일에 입력
                 firstTime = keypress[0][2]
                 keypress_copy = keypress[:]
 
@@ -73,6 +73,7 @@ class replay_Button(Button):
         self.text = main_font.render(self.text_input, True, "white")
         self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
         self.obj = obj
+
     def checkForInput(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
             #todo
@@ -84,6 +85,10 @@ class replay_Button(Button):
                 keypress = [eval(line.rstrip()) for line in file]
             file.close()
             self.obj.replay(running, keypress, tempTime)
+
+            return True
+        return False
+
 
 class key:
     def __init__(self, octave_num, pitch_num): #pitch_num: 0~13 ==> 14개음 (dummy 포함)

@@ -41,6 +41,8 @@ pressed_keys = dict()
 for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
     pressed_keys[char] = [False, False]
 
+pressed_keys_init = pressed_keys.copy()
+
 record = False
 keypress = []
 
@@ -117,7 +119,10 @@ while running:
             print(record)
             play.checkForInput(pygame.mouse.get_pos())
             pause.checkForInput(pygame.mouse.get_pos())
-            replay.checkForInput(pygame.mouse.get_pos())
+            replayed = replay.checkForInput(pygame.mouse.get_pos())
+            if replayed:
+                pressed_keys = pressed_keys_init
+                keypress = list()
 
         # 소리 출력
         p.sound_piano(pressed_keys)
@@ -144,11 +149,11 @@ while running:
     p.draw(pressed_keys)
     pygame.display.update()  # 화면 update
 
-keypress.append([0, "0", 0, 0, 0]) #더미 데이터
-with open("t1.txt", "w") as file:
-    for i in range(len(keypress)):
-        file.write(str(keypress[i]) + '\n')
-file.close()
+# keypress.append([0, "0", 0, 0, 0]) #더미 데이터
+# with open("t1.txt", "w") as file:
+#     for i in range(len(keypress)):
+#         file.write(str(keypress[i]) + '\n')
+# file.close()
 
 #프로그램 종료
 pygame.quit()
