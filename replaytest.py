@@ -1,5 +1,6 @@
-import pygame
 from myclass import *
+import pygame
+
 
 #화면 크기 설정
 screen_width = 1600 #창 가로 길이
@@ -15,23 +16,6 @@ background = pygame.image.load("background.png")
 pygame.init()#pygame 초기화
 p = piano(screen) #피아노 객체 생성
 
-#가능한 키보드 입력 설정
-keyboard_white_input1 = "zxcvbnm"
-keyboard_black_input1 = "sdfghjk"
-keyboard_white_input2 = "qwertyu"
-keyboard_black_input2 = "2345678"
-all_possible_key_input = keyboard_white_input1 + keyboard_black_input1 + keyboard_white_input2 + keyboard_black_input2
-
-#입력된 키보드 값 저장할 딕셔너리 False(건반 눌려지지 않음)으로 초기화
-pressed_keys = dict()
-
-for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
-    pressed_keys[char] = [False, False]
-
-keypress = []
-with open("t1.txt", "r") as file:
-    keypress = [eval(line.rstrip()) for line in file]
-file.close()
 
 #event loop ==> 피아노의 화면 출력 갱신
 running = True
@@ -41,6 +25,9 @@ def replay(running, keypress):
     keyboard_white_input2 = "qwertyu"
     keyboard_black_input2 = "2345678"
     all_possible_key_input = keyboard_white_input1 + keyboard_black_input1 + keyboard_white_input2 + keyboard_black_input2
+    pressed_keys = dict()
+    for char in keyboard_white_input1 + keyboard_white_input2 + keyboard_black_input1 + keyboard_black_input2:
+        pressed_keys[char] = [False, False]
 
     while running:
         screen.blit(background, (0, 0))
@@ -80,6 +67,5 @@ def replay(running, keypress):
 
         break
 
-replay(running, keypress, all_possible_key_input)
 #프로그램 종료
 pygame.quit()
