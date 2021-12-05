@@ -18,7 +18,7 @@ title = pygame.image.load("title_rainbow.png")
 background.blit(title, [500, 40])
 
 #버튼 배경 이미지 불러오기
-#마리오/젤다 등 이미지로 대체 가능: 저장된 음악 불러와서 재생
+#젤다 이미지
 play_img = pygame.image.load("zelda.png")
 play_img_act = pygame.image.load("zelda.png")
 
@@ -38,7 +38,7 @@ p = piano(screen) #피아노 객체 생성
 #버튼 객체 생성
 recording = recording_Button(screen, record_img, record_img_act, False, 450, 440) #녹음버튼
 replay = replay_Button(screen, replay_img, replay_img_act, False, 750, 440, p) #리플레이 버튼
-play = play_Button(screen, play_img, play_img_act, False, 1050, 440)#젤다
+play = play_Button(screen, play_img, play_img_act, False, 1050, 440, p)#젤다
 
 
 
@@ -128,16 +128,13 @@ while running:
                 p.set_key2_to_octave(keypad_input)
 
         if event.type == pygame.MOUSEBUTTONDOWN:
-            # Button.checkForInput(pygame.mouse.get_pos())
             record = recording.checkForInput(pygame.mouse.get_pos(),record, keypress)
             print(record)
             play.checkForInput(pygame.mouse.get_pos())
-            #pause.checkForInput(pygame.mouse.get_pos())
             replayed = replay.checkForInput(pygame.mouse.get_pos())
             if replayed:
                 pressed_keys = pressed_keys_init
                 keypress = list()
-                replay.on_or_off()
 
         # 소리 출력
         p.sound_piano(pressed_keys)
@@ -148,21 +145,10 @@ while running:
     #배경 출력
     screen.blit(background, (0,0))
 
-    #버튼 업데이트/출력
-    #recording.update()
+    #버튼 출력
     recording.draw()
-    #recording.changecolor(pygame.mouse.get_pos())
-
-    #play.update()
     play.draw()
-    #play.changecolor(pygame.mouse.get_pos())
-
-    # pause.update()
-    # pause.changecolor(pygame.mouse.get_pos())
-
-    #replay.update()
     replay.draw()
-    #replay.changecolor(pygame.mouse.get_pos())
 
     #피아노(건반) 출력
     p.draw(pressed_keys)

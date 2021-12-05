@@ -12,29 +12,11 @@ class Button():
         self.x_pos = x_pos
         self.y_pos = y_pos
         self.rect = self.image.get_rect(center = (self.x_pos, self.y_pos))
-        #self.text_input = text_input
-        # self.text = main_font.render(self.text_input, True, "white")
-        #self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
 
-    def on_or_off(self):
-        self.activation =  not self.activation
-
-    # def update(self):
-    #     self.screen.blit(self.image, self.rect)
-    #     self.screen.blit(self.text, self.text_rect)
-
-    def checkForInput(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-
-            #todo
-            print("Button press!")
+    # def on_or_off(self):
+    #     self.activation =  not self.activation
 
     def draw(self):
-        # main_font = pygame.font.SysFont("system", 40)
-        # if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-        #     self.text = main_font.render(self.text_input, True, "blue")
-        # else:
-        #     self.text = main_font.render(self.text_input, True, "white")
         if self.activation:
             self.screen.blit(self.act_image, (self.x_pos, self.y_pos))
         else:
@@ -61,19 +43,6 @@ class recording_Button(Button):
         return record
 
 class play_Button(Button):
-    def checkForInput(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            #todo
-            self.activation = not self.activation
-            print("play Button press!")
-
-class pause_Button(Button):
-    def checkForInput(self, position):
-        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-
-            print("pause Button press!")
-
-class replay_Button(Button):
     def __init__(self, screen, image, act_image, activation, x_pos, y_pos, obj): #obj는 piano 객체
         main_font = pygame.font.SysFont("system", 40)
         self.screen = screen
@@ -83,14 +52,37 @@ class replay_Button(Button):
         self.y_pos = y_pos
         self.activation = activation
         self.rect = self.image.get_rect(center = (self.x_pos, self.y_pos))
-        # self.text_input = text_input
-        # self.text = main_font.render(self.text_input, True, "white")
-        # self.text_rect = self.text.get_rect(center=(self.x_pos, self.y_pos))
+        self.obj = obj
+
+    def checkForInput(self, position):
+        if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top,
+                                                                                          self.rect.bottom):
+
+            print("replay Button press!")
+
+            for i in range(2):
+                tempTime = pygame.time.get_ticks()
+                running = True
+                keypress = []
+                with open("sp.txt", "r") as file:
+                    keypress = [eval(line.rstrip()) for line in file]
+                file.close()
+                self.obj.replay(running, keypress, tempTime)
+
+
+class replay_Button(Button):
+    def __init__(self, screen, image, act_image, activation, x_pos, y_pos, obj): #obj는 piano 객체
+        self.screen = screen
+        self.image = image
+        self.act_image = act_image
+        self.x_pos = x_pos
+        self.y_pos = y_pos
+        self.activation = activation
+        self.rect = self.image.get_rect(center = (self.x_pos, self.y_pos))
         self.obj = obj
 
     def checkForInput(self, position):
         if position[0] in range(self.rect.left, self.rect.right) and position[1] in range(self.rect.top, self.rect.bottom):
-            self.activation = not self.activation
             print("replay Button press!")
             tempTime = pygame.time.get_ticks()
             running = True
@@ -99,16 +91,13 @@ class replay_Button(Button):
                 keypress = [eval(line.rstrip()) for line in file]
             file.close()
             self.obj.replay(running, keypress, tempTime)
-
             return True
         return False
 
 
 class key:
     def __init__(self, octave_num, pitch_num): #pitch_num: 0~13 ==> 14개음 (dummy 포함)
-        #self.img = image #출력될 키보드 이미지
-        #self.posX = x #건반 x좌표
-        #self.posY = y #건반 y좌표
+
         self.stack = []
         if pitch_num > 5:
             self.frequency = 130.81 * ((2)**octave_num) * 1.059 ** (pitch_num-1) #16.35 == C0 주파수, 1.059 곱하면 반음 위 건반 주파수
@@ -283,7 +272,7 @@ class piano:
                 self.set_key1_to_octave(key[3])
                 self.set_key2_to_octave(key[4])
                 while key[2] > pygame.time.get_ticks() - click_time:
-                    print("wait")
+                    pass
                 if key[0] == 1:  # 키가 눌러짐
                     # 피아노 연주 입력
                     for char in all_possible_key_input:
