@@ -27,5 +27,6 @@ class key:
                 arr = np.cos(2 * np.pi * self.__frequency * np.linspace(0, duration, frames))
                 sound = np.asarray([32767 * arr, 32767 * arr]).T.astype(np.int16)
                 sound = pygame.sndarray.make_sound(sound.copy())
+                sound.set_volume(0.3)
                 self.__stack.append(sound)
                 sound.play()

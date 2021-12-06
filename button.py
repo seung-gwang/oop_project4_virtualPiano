@@ -2,10 +2,8 @@ import pygame
 
 class Button():
     def __init__(self, screen, image,  x_pos, y_pos, obj):
-        # main_font = pygame.font.SysFont("system", 40)
         self._screen = screen
         self._image = image
-        #self._act_image = act_image
         self._x_pos = x_pos
         self._y_pos = y_pos
         self._obj = obj
@@ -17,7 +15,6 @@ class Button():
 
 class recording_Button(Button):
     def __init__(self, screen, image, act_image, activation, x_pos, y_pos):
-        # main_font = pygame.font.SysFont("system", 40)
         self.__screen = screen
         self.__image = image
         self.__act_image = act_image
@@ -40,7 +37,7 @@ class recording_Button(Button):
                         file.write(str(keypress[i]) + '\n')
                 file.close()
 
-            return not record #return False
+            return not record
 
         return record
 
@@ -68,18 +65,8 @@ class play_Button(Button):
                 file.close()
                 self._obj.replay(running, keypress, tempTime)
 
-
 class replay_Button(Button):
 
-    # def __init__(self, screen, image, act_image, x_pos, y_pos, obj): #obj는 piano 객체
-    #     self.__screen = screen
-    #     self.__image = image
-    #     self.__act_image = act_image
-    #     self.__x_pos = x_pos
-    #     self.__y_pos = y_pos
-    #     #self.activation = activation
-    #     self.__rect = self.__image.get_rect(center = (self.__x_pos, self.__y_pos))
-    #     self.__obj = obj
     def __init__(self, screen, image, x_pos, y_pos, obj):
         Button.__init__(self, screen, image, x_pos, y_pos, obj)
 
@@ -90,6 +77,7 @@ class replay_Button(Button):
             keypress = []
             with open("t1.txt", "r") as file:
                 keypress = [eval(line.rstrip()) for line in file]
+            keypress
             file.close()
             self._obj.replay(running, keypress, tempTime)
             return True
