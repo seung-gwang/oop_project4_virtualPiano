@@ -80,10 +80,8 @@ class piano:
                 else:
                     drawn_image = self.__whiteKey
 
-                self.__whiteKeys[7*i+noteIdx].draw( self.__screen,
-                                                    drawn_image,
-                                                    x=marginX + (7 * whiteKey_width * i) + whiteKey_width * noteIdx,
-                                                    y=int(marginY * 0.7))
+                self.__whiteKeys[7*i+noteIdx].draw(self.__screen, drawn_image, x=marginX + (7 * whiteKey_width * i) + whiteKey_width * noteIdx,
+                         y=int(marginY * 0.7))
 
 
             for noteIdx in range(len(blackNotes)):  # 흑건 출력
@@ -178,7 +176,6 @@ class piano:
     #(F1 or F2) + (키패드 숫자) 입력으로 키보드 셋팅 변경
     def set_key1_to_octave(self, keypad_input):
         self.__set_octave1 = keypad_input - 1
-
     def get_octave1(self):
         return self.__set_octave1
 
